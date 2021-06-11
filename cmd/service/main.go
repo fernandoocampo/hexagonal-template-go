@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"os"
+
+	"github.com/fernandoocampo/myapp/internal/application"
 )
 
 const (
