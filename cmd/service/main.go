@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/fernandoocampo/myapp/internal/application"
+	"github.com/fernandoocampo/hexagonal-template-go/internal/application"
 )
 
 const (

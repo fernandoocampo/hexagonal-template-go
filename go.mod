@@ -1,4 +1,4 @@
-module github.com/fernandoocampo/myapp
+module github.com/fernandoocampo/hexagonal-template-go
 
 go 1.15
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/fernandoocampo/myapp/internal/people"
+	"github.com/fernandoocampo/hexagonal-template-go/internal/people"
 )
 
 func TestCreatePerson(t *testing.T) {
