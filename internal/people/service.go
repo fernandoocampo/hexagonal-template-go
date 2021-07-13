@@ -4,26 +4,17 @@ import (
 	"context"
 	"errors"
 	"log"
+
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/anydb"
 )
-
-// SavePersonCommand defines an insert a person command.
-type SavePersonCommand interface {
-	ID() string
-	Name() string
-}
-
-// Repository persist Person data.
-type Repository interface {
-	CreatePerson(ctx context.Context, person SavePersonCommand) error
-}
 
 // Service person service
 type Service struct {
-	repository Repository
+	repository *anydb.Client
 }
 
 // NewService creates a new Person service
-func NewService(repository Repository) *Service {
+func NewService(repository *anydb.Client) *Service {
 	return &Service{
 		repository: repository,
 	}
@@ -34,7 +25,8 @@ func (p *Service) CreatePerson(ctx context.Context, newPerson NewPerson) error {
 	log.Println("msg", "creating a person", "level", "DEBUG", "method", "person.Service.CreatePerson", "data", newPerson)
 	createPerson := toCreatePerson(newPerson)
 	// do any business validation here
-	personToSave := createPerson.toSavePersonCommand()
+	// then save the person
+	personToSave := createPerson.toInsertPersonCommand()
 	err := p.repository.CreatePerson(ctx, personToSave)
 	if err != nil {
 		log.Println("msg", "creating a person failed", "level", "ERROR", "error", err, "data", personToSave)
