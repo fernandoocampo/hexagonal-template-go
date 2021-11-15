@@ -3,6 +3,7 @@ module github.com/fernandoocampo/hexagonal-template-go
 go 1.15
 
 require (
+	github.com/caarlos0/env v3.5.0+incompatible // indirect
 	github.com/go-kit/kit v0.10.0
 	github.com/google/uuid v1.2.0
 	github.com/gorilla/mux v1.8.0

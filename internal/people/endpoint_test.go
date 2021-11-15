@@ -17,11 +17,11 @@ func TestCreatePerson(t *testing.T) {
 	anyDBConnection := &AnyDBConnectionMock{}
 	peopleRepository := anydb.NewClient(anyDBConnection)
 	peopleService := people.NewService(peopleRepository)
-	peopleEndpoints := people.NewEndpoints(peopleService)
+	peopleEndpoints := people.NewEndpoints(peopleService).CreatePerson()
 	ctx := context.TODO()
 
 	// WHEN
-	result, err := peopleEndpoints.CreatePerson(ctx, newPerson)
+	result, err := peopleEndpoints(ctx, newPerson)
 
 	// THEN
 	if err != nil {

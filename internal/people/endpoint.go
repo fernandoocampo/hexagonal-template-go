@@ -10,17 +10,18 @@ import (
 
 // Endpoints is a wrapper for endpoints
 type Endpoints struct {
-	CreatePerson endpoint.Endpoint
+	service *Service
 }
 
 // NewEndpoints create a new people endpoints.
 func NewEndpoints(service *Service) *Endpoints {
 	return &Endpoints{
-		CreatePerson: makeCreatePerson(service),
+		service: service,
 	}
 }
 
-func makeCreatePerson(service *Service) endpoint.Endpoint {
+// CreatePerson creates an endpoint function to create people
+func (e *Endpoints) CreatePerson() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		log.Println("msg", "creating a new person", "method", "people.Endpoints.CreatePerson", "person", request, "level", "DEBUG")
 		newPerson, ok := request.(NewPerson)
@@ -33,7 +34,7 @@ func makeCreatePerson(service *Service) endpoint.Endpoint {
 			return "false", errors.New("invalid create person request")
 		}
 
-		err := service.CreatePerson(ctx, newPerson)
+		err := e.service.CreatePerson(ctx, newPerson)
 		if err != nil {
 			log.Println(
 				"msg", "the given new person could not be created",

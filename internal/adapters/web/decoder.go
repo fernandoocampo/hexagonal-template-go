@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/fernandoocampo/hexagonal-template-go/internal/people"
 )
 
 func decodeCreatePersonRequest(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -26,5 +28,9 @@ func decodeCreatePersonRequest(ctx context.Context, r *http.Request) (interface{
 
 	log.Println("level", "DEBUG", "msg", "person request was decoded", "request", req)
 
-	return req, nil
+	newPerson := people.NewPerson{
+		Name: req.JName,
+	}
+
+	return newPerson, nil
 }
