@@ -4,16 +4,18 @@ import (
 	"context"
 	"testing"
 
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/anydb"
 	"github.com/fernandoocampo/hexagonal-template-go/internal/people"
 )
 
 func TestCreatePerson(t *testing.T) {
 	// GIVEN
 	newPersonName := "Fernando"
-	newPerson := newPerson{
-		name: newPersonName,
+	newPerson := people.NewPerson{
+		Name: newPersonName,
 	}
-	peopleRepository := &repositoryMock{}
+	anyDBConnection := &AnyDBConnectionMock{}
+	peopleRepository := anydb.NewClient(anyDBConnection)
 	peopleService := people.NewService(peopleRepository)
 	peopleEndpoints := people.NewEndpoints(peopleService)
 	ctx := context.TODO()
@@ -32,30 +34,21 @@ func TestCreatePerson(t *testing.T) {
 	if resultValue != "true" {
 		t.Errorf("unexpected result: %s", resultValue)
 	}
-	if peopleRepository.personToSave.ID() == "" {
+	if anyDBConnection.data["id"] == "" {
 		t.Errorf("person to save in the repository must have an ID, but got empty")
 	}
-	if peopleRepository.personToSave.Name() != newPersonName {
-		t.Errorf("person to save in the repository must be: %q, but got: %q", newPersonName, peopleRepository.personToSave.Name())
+	if anyDBConnection.data["name"] != newPersonName {
+		t.Errorf("person to save in the repository must be: %q, but got: %q", newPersonName, anyDBConnection.data["name"])
 	}
 }
 
-// newPerson defines new person data.
-type newPerson struct {
-	name string
+// AnyDBConnectionMock simulates a hypotetical external library.
+type AnyDBConnectionMock struct {
+	data map[string]interface{}
 }
 
-// Name returns the new person name.
-func (n newPerson) Name() string {
-	return n.name
-}
-
-// repositoryMock defines a mock for people repository
-type repositoryMock struct {
-	personToSave people.SavePersonCommand
-}
-
-func (r *repositoryMock) CreatePerson(ctx context.Context, person people.SavePersonCommand) error {
-	r.personToSave = person
+// Persist hypotetical persist method.
+func (a *AnyDBConnectionMock) Persist(ctx context.Context, data map[string]interface{}) error {
+	a.data = data
 	return nil
 }

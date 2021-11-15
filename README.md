@@ -15,7 +15,7 @@ Why you are making the decisions you make?
 
 In the meantime, I will be trying to do the following things. You can find in this repository different branches with different ways to implement a microservice with Go.
 
-1. I want to try to apply the William Kennedy's package oriented design. A purist design of my own (I realized that I have interface pollution in this first version.).
+1. I want to try to apply the William Kennedy's package oriented design.
 
 ## Bibliography
 

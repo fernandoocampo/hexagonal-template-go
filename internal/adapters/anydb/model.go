@@ -1,14 +1,21 @@
 package anydb
 
-// PersonEntity defines a person entity for any db.
-type PersonEntity struct {
+import "context"
+
+// Connection defines anydb database behavior.
+type Connection interface {
+	Persist(ctx context.Context, record map[string]interface{}) error
+}
+
+// InsertPersonCommand defines an insert a person command.
+type InsertPersonCommand struct {
 	ID   string
 	Name string
 }
 
-func toPersonEntity(insertPersonCommand InsertPersonCommand) PersonEntity {
-	return PersonEntity{
-		ID:   insertPersonCommand.ID(),
-		Name: insertPersonCommand.Name(),
+func (i *InsertPersonCommand) toAnyRecord() map[string]interface{} {
+	return map[string]interface{}{
+		"id":   i.ID,
+		"name": i.Name,
 	}
 }

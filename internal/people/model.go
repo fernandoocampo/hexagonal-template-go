@@ -1,17 +1,20 @@
 package people
 
-import "github.com/google/uuid"
+import (
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/anydb"
+	"github.com/google/uuid"
+)
 
 // NewPerson contains new person data.
-type NewPerson interface {
-	Name() string
+type NewPerson struct {
+	Name string
 }
 
 // toCreatePerson transform the given new person data to a create person
 func toCreatePerson(newPerson NewPerson) *createPerson {
 	return &createPerson{
 		id:   uuid.New().String(),
-		name: newPerson.Name(),
+		name: newPerson.Name,
 	}
 }
 
@@ -31,8 +34,14 @@ func (c *createPerson) Name() string {
 	return c.name
 }
 
-// toSavePersonCommand transform the given create person command
+// toInsertPersonCommand transform the given create person command
 // to an save person command.
-func (c *createPerson) toSavePersonCommand() SavePersonCommand {
-	return c
+func (c *createPerson) toInsertPersonCommand() anydb.InsertPersonCommand {
+	var result anydb.InsertPersonCommand
+	if c == nil {
+		return result
+	}
+	result.ID = c.id
+	result.Name = c.name
+	return result
 }
