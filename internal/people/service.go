@@ -5,16 +5,21 @@ import (
 	"errors"
 	"log"
 
-	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/anydb"
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/storage"
 )
+
+// Repository define people repository behavior.
+type Repository interface {
+	CreatePerson(ctx context.Context, newPerson storage.InsertPersonCommand) error
+}
 
 // Service person service
 type Service struct {
-	repository *anydb.Client
+	repository Repository
 }
 
 // NewService creates a new Person service
-func NewService(repository *anydb.Client) *Service {
+func NewService(repository Repository) *Service {
 	return &Service{
 		repository: repository,
 	}

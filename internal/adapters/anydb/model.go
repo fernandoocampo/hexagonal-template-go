@@ -1,21 +1,19 @@
 package anydb
 
-import "context"
+import (
+	"context"
+
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/storage"
+)
 
 // Connection defines anydb database behavior.
 type Connection interface {
 	Persist(ctx context.Context, record map[string]interface{}) error
 }
 
-// InsertPersonCommand defines an insert a person command.
-type InsertPersonCommand struct {
-	ID   string
-	Name string
-}
-
-func (i *InsertPersonCommand) toAnyRecord() map[string]interface{} {
+func insertPersonToAnyRecord(icmd *storage.InsertPersonCommand) map[string]interface{} {
 	return map[string]interface{}{
-		"id":   i.ID,
-		"name": i.Name,
+		"id":   icmd.ID,
+		"name": icmd.Name,
 	}
 }

@@ -1,7 +1,7 @@
 package people
 
 import (
-	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/anydb"
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/storage"
 	"github.com/google/uuid"
 )
 
@@ -36,8 +36,8 @@ func (c *createPerson) Name() string {
 
 // toInsertPersonCommand transform the given create person command
 // to an save person command.
-func (c *createPerson) toInsertPersonCommand() anydb.InsertPersonCommand {
-	var result anydb.InsertPersonCommand
+func (c *createPerson) toInsertPersonCommand() storage.InsertPersonCommand {
+	var result storage.InsertPersonCommand
 	if c == nil {
 		return result
 	}

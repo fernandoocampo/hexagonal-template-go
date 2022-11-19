@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"log"
+
+	"github.com/fernandoocampo/hexagonal-template-go/internal/adapters/storage"
 )
 
 // Client defines logic for Any repository client.
@@ -19,8 +21,8 @@ func NewClient(anyClient Connection) *Client {
 }
 
 // CreatePerson persist the given person into the any database.
-func (c *Client) CreatePerson(ctx context.Context, newPerson InsertPersonCommand) error {
-	person := newPerson.toAnyRecord()
+func (c *Client) CreatePerson(ctx context.Context, newPerson storage.InsertPersonCommand) error {
+	person := insertPersonToAnyRecord(&newPerson)
 	err := c.anyClient.Persist(ctx, person)
 	if err != nil {
 		log.Println("msg", "person could not be created", "method", "any.Client.CreatePerson")
